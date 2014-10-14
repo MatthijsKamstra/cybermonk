@@ -1,20 +1,30 @@
 # CyberMonk
 
-I have a blog, but I was looking for a simple and quick way to start a little blog without all the database
+I was looking for a simple and quick way to start a little blog.
+Perverably cheaply (free) hosted.
 
-Based upon the excellent work of [Tong](http://blog.disktree.net/) and his Blog generator tool 
-[Cyberchrist](https://github.com/tong/cyberchrist)
+I quickly found out that you need a static website.
+Best solution is *Jekyll*.
 
-started with version cyberchrist 0.3.2
-but, because of some rewriting, I guess it save to say this is (CyberMonk) 0.4.0
+But I like Haxe, so I was looking for someone who had the same idea.
 
+I found it: [Tong](http://blog.disktree.net/) and his Blog generator tool [Cyberchrist](https://github.com/tong/cyberchrist)
+Sadly the project doesn't work out-of-the-box, so I need to rewrite/refector/recode.
+
+That is also the reason I renamed the project.
+
+
+## CyberMonk version
+
+Based upon the excellent work of Tong, I start with cyberchrist version 0.3.2
+but, because of some rewriting, the first version of CyberMonk will be 0.4.0.
 
 
 ## Haxe
 
 The project is written in [Haxe](http://haxe.org/) and copiled to Neko
 
-if you want to compile it yourself you need to install the next libs:
+if you want to compile it yourself you need to install (besides Haxe) the next libs:
 
 ```
 haxelib install markdown
@@ -54,7 +64,7 @@ Haxe templates
 ## How to use
 
 Open terminal  
-drag `CyberMonk` into your terminal
+drag `cybermonk` into your terminal and press enter.
 
 ```
 CyberMonk 0.4.0
