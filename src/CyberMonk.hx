@@ -335,7 +335,7 @@ class CyberMonk
 	 * @param  name : String [description]
 	 * @return	: Site
 	 */
-	static function parseSite( path : String, name : String ) : Site 
+	function parseSite( path : String, name : String ) : Site 
 	{
 		var fp = '$path/$name';
 		var ft = File.getContent( fp );
@@ -388,18 +388,53 @@ class CyberMonk
 			
 			// Console.debug (f);
 
-			if( !e_post_filename.match( f.replace('.md' , '' ) ) ) {
-				Console.warn( 'Invalid filename for post [$f]' );
+			if( !e_post_filename.match( f.replace('.md' , '' ) ) ) 
+			{	
+
+
+				// print a message on the screen
+		        // Sys.println("Do you want to update [$f]? [y/n]");
+		        // // read user input
+		        // var input = Sys.stdin().readLine();
+		        // // print the result
+		        // Sys.println("Hello " + input);
+
+
 				var _now:DateTime = getCurrentDate();
 				var newName:String = _now.datestring + "-" +f.replace(' ', '-');
+				
+				var ft = File.getContent(path + "/" + f );
+		
+				if( !e_site.match( ft ) ){
+					Console.warn( 'Invalid html template [$ft]' );
+
+					var info:String = "---\n" +
+						"title : " + newName.replace("-", " ").replace("_", " " ) + "\n" +
+						"tags : first, cybermonk, post\n" +
+						"description : what is this\n" +
+						"author : " + cfg.author + "\n" +
+						"---\n";
+
+
+					writeFile (path + "/" + f  , info + ft);
+
+					println ('Added info to post [$f]');
+
+				}
+
+				Console.warn( 'Invalid filename for post [$f]' );
+
 				FileSystem.rename(path + "/" + f, path + "/" + newName);
 
 				println ('Changed name of post [$f] to ['+newName+']');
 
-				// TODO :: rename the file, add info at the top of the page
 
 				continue;
 			}
+
+
+
+
 
 			// Console.debug (e_post_filename.match( f.replace('.md' , '' ) ));
 
@@ -521,7 +556,7 @@ class CyberMonk
 	 * @param  path :             String [description]
 	 * @return      [description]
 	 */
-	static function processDirectory( path : String ) {
+	function processDirectory( path : String ) {
 
 		Console.log ('$path');
 
@@ -607,7 +642,7 @@ class CyberMonk
 	 * @param  ?attach :             Dynamic [description]
 	 * @return         [description]
 	 */
-	static function createBaseContext( ?attach : Dynamic ) : Dynamic {
+	function createBaseContext( ?attach : Dynamic ) : Dynamic {
 		var _posts = posts;
 		var _archive = new Array<Post>();
 		if( cfg.num_index_posts > 0 && posts.length > cfg.num_index_posts ) {
@@ -645,7 +680,7 @@ class CyberMonk
 
 	// ____________________________________ time functions ____________________________________
 
-	static function formatUTC( year : Int, month : Int, day : Int ) : String {
+	function formatUTC( year : Int, month : Int, day : Int ) : String {
 		var s = new StringBuf();
 		s.add( year );
 		s.add( "-" );
@@ -656,23 +691,23 @@ class CyberMonk
 		return s.toString();
 	}
 
-	static function formatUTCDate( d : Date ) : String {
+	function formatUTCDate( d : Date ) : String {
 		return formatUTC( d.getFullYear(), d.getMonth()+1, d.getDate() );
 	}
 
-	static function formatTimePart( i : Int ) : String {
+	function formatTimePart( i : Int ) : String {
 		return if( i < 10 ) "0"+i else Std.string(i);
 	}
 
 	// ____________________________________ write / clear /  ____________________________________
 
-	static function writeFile( path : String, content : String ) {
+	function writeFile( path : String, content : String ) {
 		var f = File.write( path, false );
 		f.writeString( content );
 		f.close();
 	}
 
-	static inline function writeHTMLSite( path : String, ctx : Dynamic ) {
+	function writeHTMLSite( path : String, ctx : Dynamic ) {
 
 		// Console.debug([path, ctx]);
 
@@ -683,7 +718,7 @@ class CyberMonk
 		writeFile( path, t );
 	}
 
-	static function clearDirectory( path : String ) {
+	function clearDirectory( path : String ) {
 		for( f in FileSystem.readDirectory( path ) ) {
 			var p = path+"/"+f;
 			if( FileSystem.isDirectory( p ) ) {
@@ -695,7 +730,7 @@ class CyberMonk
 		}
 	}
 
-	static function copyDirectory( path : String ) {
+	function copyDirectory( path : String ) {
 		var ps = cfg.src + path;
 		for( f in FileSystem.readDirectory( ps ) ) {
 			var s = '$ps/$f';
@@ -711,12 +746,12 @@ class CyberMonk
 	
 	// ____________________________________ misc ____________________________________
 
-	static function exit( ?info : Dynamic ) {
+	function exit( ?info : Dynamic ) {
 		if( info != null ) Console.log( info );
 		Sys.exit( 0 );
 	}
 
-	static function mergeObjects<A,B,R>( a : A, b : B ) : R {
+	function mergeObjects<A,B,R>( a : A, b : B ) : R {
 		for( f in Reflect.fields( b ) ) Reflect.setField( a, f, Reflect.field( b, f ) );
 		return cast a;
 	}
