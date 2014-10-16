@@ -160,13 +160,7 @@ class CyberMonk
 
 		// Console.debug (cfg);
 
-
-		var info = "---\n"+
-		"title : Post CyberMonk\n" + 
-		"tags : first, cybermonk, site\n" +
-		"description : I should do something with this desc \n" +
-		"author : [mck]\n" +
-		"---\n";
+		var info:String = createPostHeaderInfo('Post CyberMonk');
 
 		// writeFile (cfg.src + 'index.html' , output);
 		writeFile (cfg.src + 'index.html' , info + indexStr);
@@ -212,54 +206,13 @@ class CyberMonk
 	function buildPost(name:String, minusYear:Int = 0):Void
 	{
 		// generate first post
-		var _now:DateTime = getCurrentDate();
-		_now.year = _now.year + minusYear;
+		var _now:DateTime = getCurrentDate(minusYear);
 
-		// var n = Date.now();
-		// var dy = n.getFullYear() + minusYear;
-		// var dm = n.getMonth()+1;
-		// var dd = n.getDate();
-		// var datestring = formatTimePart(dy)+"-"+formatTimePart(dm)+"-"+formatTimePart(dd);
-		// var now : DateTime = {
-		// 	year : dy,
-		// 	month : dm,
-		// 	day : dd,
-		// 	datestring : formatTimePart(dy)+"-"+formatTimePart(dm)+"-"+formatTimePart(dd),
-		// 	utc : formatUTC( dy, dm, dd )
-		// }
-		
-		var info:String = "---\n" +
-			"title : " + name.replace("-", " ").replace("_", " " ) + "\n" +
-			"tags : first, cybermonk, post\n" +
-			"description : what is this\n" +
-			"author : " + cfg.author + "\n" +
-			"---\n";
+		var info:String = createPostHeaderInfo(name);
 
 		var str = haxe.Resource.getString("markdown");
 
 		writeFile (cfg.src + '_posts/' + _now.datestring + '-' + name + '.md' , info + str);
-	}
-
-	/**
-	 * get the current date in a DateTime format
-	 * var _now:DateTime = getCurrentDate();
-	 * @return 		DateTime
-	 */
-	function getCurrentDate():DateTime
-	{
-		var n = Date.now();
-		var dy = n.getFullYear();
-		var dm = n.getMonth()+1;
-		var dd = n.getDate();
-		var datestring = formatTimePart(dy)+"-"+formatTimePart(dm)+"-"+formatTimePart(dd);
-		var now : DateTime = {
-			year : dy,
-			month : dm,
-			day : dd,
-			datestring : formatTimePart(dy)+"-"+formatTimePart(dm)+"-"+formatTimePart(dd),
-			utc : formatUTC( dy, dm, dd )
-		}
-		return now;
 	}
 
 	function cmdClean():Void
@@ -391,13 +344,12 @@ class CyberMonk
 			if( !e_post_filename.match( f.replace('.md' , '' ) ) ) 
 			{	
 
-
 				// print a message on the screen
 		        // Sys.println("Do you want to update [$f]? [y/n]");
 		        // // read user input
 		        // var input = Sys.stdin().readLine();
 		        // // print the result
-		        // Sys.println("Hello " + input);
+		        // Sys.println("output :: " + input);
 
 
 				var _now:DateTime = getCurrentDate();
@@ -407,34 +359,16 @@ class CyberMonk
 		
 				if( !e_site.match( ft ) ){
 					Console.warn( 'Invalid html template [$ft]' );
-
-					var info:String = "---\n" +
-						"title : " + newName.replace("-", " ").replace("_", " " ) + "\n" +
-						"tags : first, cybermonk, post\n" +
-						"description : what is this\n" +
-						"author : " + cfg.author + "\n" +
-						"---\n";
-
-
+					var info:String = createPostHeaderInfo(newName);
 					writeFile (path + "/" + f  , info + ft);
-
 					println ('Added info to post [$f]');
-
 				}
 
 				Console.warn( 'Invalid filename for post [$f]' );
-
 				FileSystem.rename(path + "/" + f, path + "/" + newName);
-
 				println ('Changed name of post [$f] to ['+newName+']');
-
-
 				continue;
 			}
-
-
-
-
 
 			// Console.debug (e_post_filename.match( f.replace('.md' , '' ) ));
 
@@ -450,7 +384,6 @@ class CyberMonk
 			
 			site.html = markdown.format (site.content);
 
-			
 			// Console.debug (site.html);
 
 			var d_year = Std.parseInt( e_post_filename.matched(1) );
@@ -649,17 +582,7 @@ class CyberMonk
 			_archive = _posts.slice( cfg.num_index_posts );
 			_posts = _posts.slice( 0, cfg.num_index_posts );
 		}
-		var n = Date.now();
-		var dy = n.getFullYear();
-		var dm = n.getMonth()+1;
-		var dd = n.getDate();
-		var now : DateTime = {
-			year : dy,
-			month : dm,
-			day : dd,
-			datestring : formatTimePart(dy)+"-"+formatTimePart(dm)+"-"+formatTimePart(dd),
-			utc : formatUTC( dy, dm, dd )
-		}
+		var now:DateTime = getCurrentDate();
 		var ctx = {
 			title : cfg.title,
 			url : cfg.url,
@@ -678,7 +601,49 @@ class CyberMonk
 		return ctx;
 	}
 
+	/**
+	 * header needed above .md document, extra info about the post
+	 *
+	 * @example		var info:String = createPostHeaderInfo('hallo hoe gaat het');
+	 * @param  		title  		used for the post
+	 * @return      header info
+	 */
+	function createPostHeaderInfo(title:String):String
+	{
+		var info:String = "---\n" +
+			"title : " + title.replace("-", " ").replace("_", " " ) + "\n" +
+			"tags : first, cybermonk, post\n" +
+			"description : what is this\n" +
+			"author : " + cfg.author + "\n" +
+			"---\n";
+
+		return info;
+	}
+
 	// ____________________________________ time functions ____________________________________
+
+	/**
+	 * get the current date in a DateTime format
+	 * @example		var now:DateTime = getCurrentDate();
+	 * @param  		?minusYear 		little correction to make debugging easier
+	 * @return 		DateTime
+	 */
+	function getCurrentDate(?minusYear:Int=0):DateTime
+	{
+		var n = Date.now();
+		var dy = n.getFullYear() + minusYear;
+		var dm = n.getMonth()+1;
+		var dd = n.getDate();
+		var datestring = formatTimePart(dy)+"-"+formatTimePart(dm)+"-"+formatTimePart(dd);
+		var now : DateTime = {
+			year : dy,
+			month : dm,
+			day : dd,
+			datestring : formatTimePart(dy)+"-"+formatTimePart(dm)+"-"+formatTimePart(dd),
+			utc : formatUTC( dy, dm, dd )
+		}
+		return now;
+	}
 
 	function formatUTC( year : Int, month : Int, day : Int ) : String {
 		var s = new StringBuf();
