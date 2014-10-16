@@ -102,7 +102,7 @@ class CyberMonk
 		var timestamp = Timer.stamp();
 
 		// Read/Parse config
-		var path_cfg = cfg.src + '_config';
+		var path_cfg = cfg.src + '_config.json';
 		if( FileSystem.exists( path_cfg ) ) 
 		{
 			var content = File.getContent( path_cfg );
@@ -120,14 +120,14 @@ class CyberMonk
 		var cmd = args[0];
 		if( cmd == null ) cmd = 'help';
 		switch cmd {
-			case "help" 				: exit( HELP );
-			case "version" 				: exit( VERSION );
-			case 'start', 'generate' 	: cmdGenerate();
-			case 'config' 				: cmdConfig();
-			case 'clean' 				: cmdClean();
-			case 'build' 				: cmdBuild();
-			case 'update' 				: cmdUpdate();
-			case 'post' 				: cmdPost();
+			case "help", 'h'					: exit( HELP );
+			case "version", "v"					: exit( VERSION );
+			case 'start', 'generate', 'init' 	: cmdGenerate();
+			case 'config' 						: cmdConfig();
+			case 'clean' 						: cmdClean();
+			case 'build' 						: cmdBuild();
+			case 'update' 						: cmdUpdate();
+			case 'post' 						: cmdPost();
 		}
 
 		// [mck] establish bragging rights
@@ -147,6 +147,7 @@ class CyberMonk
 		if( !FileSystem.exists( cfg.src + '_layout' ) ) FileSystem.createDirectory (cfg.src + '_layout');
 		if( !FileSystem.exists( cfg.src + '_posts' ) ) FileSystem.createDirectory (cfg.src + '_posts');
 		if( !FileSystem.exists( cfg.src + 'css' ) ) FileSystem.createDirectory (cfg.src + 'css');
+		if( !FileSystem.exists( cfg.src + '_drafts' ) ) FileSystem.createDirectory (cfg.src + '_drafts');
 
 		// use embedded .html
 		var indexStr = haxe.Resource.getString("index");
@@ -190,10 +191,13 @@ class CyberMonk
 		writeFile (cfg.src + 'img/monkfeather.svg' , haxe.Resource.getString('monkfeather') );
 		
 
-		writeFile (cfg.src + '_config' ,  haxe.Json.stringify(cfg, null, '\t'));
+		var favicon = haxe.Resource.getBytes('favicon');
+		sys.io.File.saveBytes(cfg.src + 'favicon.ico' , favicon);
 
-		buildPost('Welcome_CyberMonk');
-		buildPost('Test_CyberMonk', -1);
+		writeFile (cfg.src + '_config.json' ,  haxe.Json.stringify(cfg, null, '\t'));
+
+		buildPost('Welcome-CyberMonk');
+		buildPost('Test-CyberMonk', -1);
 
 		Console.log( 'Generate' );
 	}
@@ -220,7 +224,7 @@ class CyberMonk
 		}
 		
 		var info:String = "---\n" +
-			"title : " + name + "\n" +
+			"title : " + name.replace("-", " ").replace("_", " " ) + "\n" +
 			"tags : first, cybermonk, post\n" +
 			"description : what is this\n" +
 			"author : " + cfg.author + "\n" +
@@ -281,7 +285,7 @@ class CyberMonk
 	function cmdUpdate():Void
 	{
 		// [mck] check for most important file
-		var path_cfg = cfg.src + '_config';
+		var path_cfg = cfg.src + '_config.json';
 		if( !FileSystem.exists( path_cfg ) ) 
 			Console.warn ( 'are you sure you don\'t mean "generate"?' );
 		else 

@@ -9,8 +9,9 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="css/base.min.css">
 	<link rel="stylesheet" href="css/custom.css">
+	<link rel="alternate" type="application/atom+xml" title="::title:: - feed" href="atom.xml" />
+	<link rel="icon" href="favicon.ico">  
 	<!--   
-	<link rel="icon" href="/docs/favicon.png">  
 	<link rel="apple-touch-icon-precomposed" href="/docs/apple-touch-icon.png">
 	-->
 	<link href='http://fonts.googleapis.com/css?family=Dosis' rel='stylesheet' type='text/css'>

@@ -33,7 +33,7 @@ haxelib install mconsole
 
 ## Sources used
 
-An icon from [flaticon.com](http://www.flaticon.com)
+An icon from [flaticon.com](http://www.flaticon.com/free-icon/feather-outline_43793)
 
 Haxe (lib) Markdown  
 [https://github.com/dpeek/haxe-markdown](https://github.com/dpeek/haxe-markdown)
