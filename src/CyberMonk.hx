@@ -5,6 +5,9 @@ import sys.io.File;
 import haxe.Template;
 import haxe.Timer;
 import haxe.io.Path;
+import Sys.println;
+import Sys.print;
+import Sys.stdin;
 
 import cybermonk.Markmedown;
 
@@ -131,7 +134,7 @@ class CyberMonk
 		}
 
 		// [mck] establish bragging rights
-		Console.info( '$cmd is DONE in : ${Std.int((Timer.stamp()-timestamp)*1000)}ms' );
+		println( '$cmd is DONE in : ${Std.int((Timer.stamp()-timestamp)*1000)}ms' );
 	}
 
 	// ____________________________________ cmd functions ____________________________________
@@ -144,10 +147,10 @@ class CyberMonk
 		if( !FileSystem.exists( cfg.src + cfg.img ) ) FileSystem.createDirectory (cfg.src + cfg.img);	
 		
 		// generate templates
+		if( !FileSystem.exists( cfg.src + '_drafts' ) ) FileSystem.createDirectory (cfg.src + '_drafts');
 		if( !FileSystem.exists( cfg.src + '_layout' ) ) FileSystem.createDirectory (cfg.src + '_layout');
 		if( !FileSystem.exists( cfg.src + '_posts' ) ) FileSystem.createDirectory (cfg.src + '_posts');
 		if( !FileSystem.exists( cfg.src + 'css' ) ) FileSystem.createDirectory (cfg.src + 'css');
-		if( !FileSystem.exists( cfg.src + '_drafts' ) ) FileSystem.createDirectory (cfg.src + '_drafts');
 
 		// use embedded .html
 		var indexStr = haxe.Resource.getString("index");
@@ -172,13 +175,10 @@ class CyberMonk
 
 		// use embedded .css
 		var cssStr = haxe.Resource.getString("css");
-		// var t = new Template(str);
-		// var output = t.execute(cfg);
-
 		writeFile (cfg.src + '/css/base.min.css' , cssStr);
-
 		writeFile ( cfg.src + '/css/custom.css' , haxe.Resource.getString ('customcss') );
 
+		// feeds
 		var atomStr = haxe.Resource.getString("atom");
 		var rssStr = haxe.Resource.getString("rss");
 
@@ -199,6 +199,8 @@ class CyberMonk
 		buildPost('Welcome-CyberMonk');
 		buildPost('Test-CyberMonk', -1);
 
+		writeFile(cfg.src + '_drafts/test me.md', '*test*');
+
 		Console.log( 'Generate' );
 	}
 
@@ -210,18 +212,21 @@ class CyberMonk
 	function buildPost(name:String, minusYear:Int = 0):Void
 	{
 		// generate first post
-		var n = Date.now();
-		var dy = n.getFullYear() + minusYear;
-		var dm = n.getMonth()+1;
-		var dd = n.getDate();
-		var datestring = formatTimePart(dy)+"-"+formatTimePart(dm)+"-"+formatTimePart(dd);
-		var now : DateTime = {
-			year : dy,
-			month : dm,
-			day : dd,
-			datestring : formatTimePart(dy)+"-"+formatTimePart(dm)+"-"+formatTimePart(dd),
-			utc : formatUTC( dy, dm, dd )
-		}
+		var _now:DateTime = getCurrentDate();
+		_now.year = _now.year + minusYear;
+
+		// var n = Date.now();
+		// var dy = n.getFullYear() + minusYear;
+		// var dm = n.getMonth()+1;
+		// var dd = n.getDate();
+		// var datestring = formatTimePart(dy)+"-"+formatTimePart(dm)+"-"+formatTimePart(dd);
+		// var now : DateTime = {
+		// 	year : dy,
+		// 	month : dm,
+		// 	day : dd,
+		// 	datestring : formatTimePart(dy)+"-"+formatTimePart(dm)+"-"+formatTimePart(dd),
+		// 	utc : formatUTC( dy, dm, dd )
+		// }
 		
 		var info:String = "---\n" +
 			"title : " + name.replace("-", " ").replace("_", " " ) + "\n" +
@@ -232,7 +237,29 @@ class CyberMonk
 
 		var str = haxe.Resource.getString("markdown");
 
-		writeFile (cfg.src + '_posts/' + datestring + '-' + name + '.md' , info + str);
+		writeFile (cfg.src + '_posts/' + _now.datestring + '-' + name + '.md' , info + str);
+	}
+
+	/**
+	 * get the current date in a DateTime format
+	 * var _now:DateTime = getCurrentDate();
+	 * @return 		DateTime
+	 */
+	function getCurrentDate():DateTime
+	{
+		var n = Date.now();
+		var dy = n.getFullYear();
+		var dm = n.getMonth()+1;
+		var dd = n.getDate();
+		var datestring = formatTimePart(dy)+"-"+formatTimePart(dm)+"-"+formatTimePart(dd);
+		var now : DateTime = {
+			year : dy,
+			month : dm,
+			day : dd,
+			datestring : formatTimePart(dy)+"-"+formatTimePart(dm)+"-"+formatTimePart(dd),
+			utc : formatUTC( dy, dm, dd )
+		}
+		return now;
 	}
 
 	function cmdClean():Void
@@ -240,17 +267,17 @@ class CyberMonk
 		if( FileSystem.exists( cfg.dst ) ) {
 			clearDirectory( cfg.dst );
 			FileSystem.deleteDirectory( cfg.dst );
-			Console.log( 'Cleaned' );
+			println( 'Cleaned' );
 		}
 	}
 
 	function cmdConfig():Void
 	{
 		if( lastBuildDate != -1 )
-			Console.info( 'Last build : ' + Date.fromTime( lastBuildDate ) );
+			println( 'Last build : ' + Date.fromTime( lastBuildDate ) );
 		else
-			Console.info( 'Project not built' );
-		for( f in Reflect.fields( cfg ) ) Console.info( '$f : ' + Reflect.field( cfg, f ) );
+			println( 'Project not built' );
+		for( f in Reflect.fields( cfg ) ) println( '$f : ' + Reflect.field( cfg, f ) );
 		exit();
 	}
 
@@ -262,7 +289,7 @@ class CyberMonk
 			lastBuildDate = Date.fromString( File.getContent( BUILD_INFO_FILE ) ).getTime();
 		}
 
-		Console.log( 'BUILD cyberMonk > ' + cfg.url );
+		println( 'BUILD cyberMonk > ' + cfg.url );
 
 		posts = new Array();
 		markdown = new cybermonk.Markmedown( {
@@ -287,16 +314,16 @@ class CyberMonk
 		// [mck] check for most important file
 		var path_cfg = cfg.src + '_config.json';
 		if( !FileSystem.exists( path_cfg ) ) 
-			Console.warn ( 'are you sure you don\'t mean "generate"?' );
+			println ( 'are you sure you don\'t mean "generate"?' );
 		else 
-			Console.info( 'you choose "update", but that doesn\'t work yet' );	
+			println( 'you choose "update", but that doesn\'t work yet' );	
 		
 	}
 
 	function cmdPost():Void
 	{
 		buildPost('Post_CyberMonk');
-		Console.log ('post-template is done');
+		println ('post-template is done');
 	}
 
 	// ____________________________________ parse / print ____________________________________
@@ -313,8 +340,9 @@ class CyberMonk
 		var fp = '$path/$name';
 		var ft = File.getContent( fp );
 		
-		if( !e_site.match( ft ) )
-			Console.error( 'Invalid html template [$fp]' );
+		if( !e_site.match( ft ) ){
+			Console.warn( 'Invalid html template [$fp]' );
+		}
 
 		var s : Site = cast {
 			css : new Array<String>()
@@ -350,7 +378,7 @@ class CyberMonk
 	 * Process/Print posts
 	 * @param  path 		The path to the post source
 	 */
-	static function printPosts( path : String ) {
+	function printPosts( path : String ) {
 
 		// Console.log ( path );
 
@@ -362,6 +390,14 @@ class CyberMonk
 
 			if( !e_post_filename.match( f.replace('.md' , '' ) ) ) {
 				Console.warn( 'Invalid filename for post [$f]' );
+				var _now:DateTime = getCurrentDate();
+				var newName:String = _now.datestring + "-" +f.replace(' ', '-');
+				FileSystem.rename(path + "/" + f, path + "/" + newName);
+
+				println ('Changed name of post [$f] to ['+newName+']');
+
+				// TODO :: rename the file, add info at the top of the page
+
 				continue;
 			}
 
@@ -547,8 +583,9 @@ class CyberMonk
 						if( site.tags != null ) ctx.keywords = site.tags.join(",");
 
 						ctx.title = cfg.title;
+						ctx.description = cfg.description;
 
-						Console.debug('site.title: ' + site.title);
+						Console.debug('ctx.title: ' + ctx.title + ' // ctx.description : ' + ctx.description );
 
 						// [mck] okay... this needs some love...
 						/**

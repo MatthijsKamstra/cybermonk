@@ -45,6 +45,13 @@ For styling I am using Basscss
 Haxe templates
 [http://old.haxe.org/doc/cross/template](http://old.haxe.org/doc/cross/template)
 
+Read more about Markdown
+[http://daringfireball.net/projects/markdown/](http://daringfireball.net/projects/markdown/) 
+
+Mou - Markdown editor for developers.
+[Mou](http://25.io/mou/)
+
+
 
 ## Structure
 ```
