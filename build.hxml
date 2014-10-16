@@ -40,4 +40,4 @@
 
 # install: CyberMonk on OSX
 -cmd echo 'install cybermonk in /usr/bin'
--cmd sudo cp ./cybermonk /usr/bin/
+-cmd sudo cp bin/cybermonk /usr/bin/
