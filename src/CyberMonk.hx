@@ -91,7 +91,10 @@ class CyberMonk
 	static var posts : Array < Post>;
 	static var markdown : Markmedown;
 
-	static var e_site = ~/ *---(.+) *--- *(.+)/ms;
+	// static var e_site = ~/ *---(.+) *--- *(.+)/ms;
+	// static var e_site = ~/(---\s*\n.*?\n?)^((---|\.\.\.)\s*$\n?)/ms;
+	// [mck] made it more precise to select the post header info 
+	static var e_site = ~/---\n(.+)\n---\n(.+)/ms; 
 	static var e_header_line = ~/^ *([a-zA-Z0-9_\/\.\-]+) *: *([a-zA-Z0-9!_,\/\[\]\.\-\?\(\)\s]+) *$/;
 	static var e_post_filename = ~/^([0-9][0-9][0-9][0-9])-([0-9][0-9])-([0-9][0-9])-([a-zA-Z0-9_,!\.\-\?\(\)\+]+)$/;
 
@@ -300,8 +303,6 @@ class CyberMonk
 		var s : Site = cast {
 			css : new Array<String>()
 		};
-
-		// Console.debug (e_site.matched(2));
 
 		for( l in e_site.matched(1).trim().split("\n") ) {
 			if( ( l = l.trim() ) == "" )
