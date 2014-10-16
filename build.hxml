@@ -9,7 +9,9 @@
 -resource src/assets/text.md@markdown
 -resource src/assets/img/feather14.svg@feather
 -resource src/assets/img/monkfeather.svg@monkfeather
+-resource src/assets/favicon.ico@favicon
 
+#haxe libs
 -lib mconsole
 -lib markdown
 
@@ -25,8 +27,7 @@
 #Add debug information
 -debug
 # stop using mconsole
-# -D no_console
-
+-D no_console
 
 #dead code elimination : remove unused code
 #"-dce no" : do not remove unused code
@@ -36,3 +37,7 @@
 
 # // [mck] create a executable file with no extension
 -cmd nekotools boot bin/cybermonk.n
+
+# install: CyberMonk on OSX
+-cmd echo 'install cybermonk in /usr/bin'
+-cmd sudo cp ./cybermonk /usr/bin/
