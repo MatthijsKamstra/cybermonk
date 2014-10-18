@@ -7,9 +7,9 @@
 	<link rel="self" href="http://www.cybermonk.com/atom.xml" />
 	<link href="http://www.cybermonk.com/atom.xml" />
 	<link rel="alternate" type="text/html" hreflang="en" href="http://www.cybermonk.com/"/>
-	<updated>2014-10-16T00:00:00Z</updated>
+	<updated>2014-10-18T00:00:00Z</updated>
 	<id>http://www.cybermonk.com/</id>
-	<generator version="0.4.0">cybermonk</generator>
+	<generator version="0.4.1">cybermonk</generator>
 	<author>
 		<name>Monk</name>
 		<uri>http://www.cybermonk.com/</uri>
@@ -18,16 +18,17 @@
  	
 	
 	<entry>
-		<title>Test CyberMonk</title>
-		<link href="http://www.cybermonk.com/2014/10/16/Test-CyberMonk.html" />
-		<id>http://www.cybermonk.com/2014/10/16/Test-CyberMonk.html</id>
-		<updated>2014-10-16T00:00:00Z</updated>
+		<title>2014 10 18 post test title.md</title>
+		<link href="http://www.cybermonk.com/2014/10/18/post-test-title.html" />
+		<id>http://www.cybermonk.com/2014/10/18/post-test-title.html</id>
+		<updated>2014-10-18T00:00:00Z</updated>
 		<content type="xhtml">
 			<div xmlns="http://www.w3.org/1999/xhtml">
-				<p><h3>Ten years ago a crack commando</h3>
-<p>unit was sent to prison by a <strong>military</strong> court for a <em>crime</em> they didn't commit. These men promptly escaped from a maximum <a href="http://www.google.com">security stockade</a> to the Los Angeles underground. 
-<img src="img/monkfeather.svg" alt="image" />
-Today, still wanted by the <code>government</code>, they <span style="text-decoration:line-through;">survive</span> as soldiers of fortune. If you have a problem and no one else can help, and if you can find them, maybe you can hire the A-team.</p></p>
+				<p><p><em>test</em></p>
+<h1>h1</h1>
+<h2>h2</h2>
+<hr />
+<p><img src="http://netdna.webdesignerdepot.com/uploads/robots/robot-36.jpg" alt="test" /></p></p>
 			</div>
 		</content>
 		<author>
@@ -37,14 +38,60 @@ Today, still wanted by the <code>government</code>, they <span style="text-decor
 	
 	<entry>
 		<title>Welcome CyberMonk</title>
-		<link href="http://www.cybermonk.com/2014/10/16/Welcome-CyberMonk.html" />
-		<id>http://www.cybermonk.com/2014/10/16/Welcome-CyberMonk.html</id>
-		<updated>2014-10-16T00:00:00Z</updated>
+		<link href="http://www.cybermonk.com/2014/10/18/Welcome-CyberMonk.html" />
+		<id>http://www.cybermonk.com/2014/10/18/Welcome-CyberMonk.html</id>
+		<updated>2014-10-18T00:00:00Z</updated>
 		<content type="xhtml">
 			<div xmlns="http://www.w3.org/1999/xhtml">
 				<p><h3>Ten years ago a crack commando</h3>
 <p>unit was sent to prison by a <strong>military</strong> court for a <em>crime</em> they didn't commit. These men promptly escaped from a maximum <a href="http://www.google.com">security stockade</a> to the Los Angeles underground. 
-<img src="img/monkfeather.svg" alt="image" />
+<img src="../img/monkfeather.svg" alt="image" />
+Today, still wanted by the <code>government</code>, they <span style="text-decoration:line-through;">survive</span> as soldiers of fortune. If you have a problem and no one else can help, and if you can find them, maybe you can hire the A-team.</p></p>
+			</div>
+		</content>
+		<author>
+			<name>Monk</name>
+		</author>
+	</entry>
+	
+	<entry>
+		<title>test me</title>
+		<link href="http://www.cybermonk.com/2014/10/17/test-me.html" />
+		<id>http://www.cybermonk.com/2014/10/17/test-me.html</id>
+		<updated>2014-10-17T00:00:00Z</updated>
+		<content type="xhtml">
+			<div xmlns="http://www.w3.org/1999/xhtml">
+				<p><p><em>test</em></p>
+<h1>h1</h1>
+<h2>h2</h2>
+<p>test hr tags vs meta data</p>
+<hr />
+<p>test images</p>
+<p><img src="../img/feather14.svg" alt="image" /></p>
+<p><img src="http://www.collectorsweekly.com/articles/wp-content/uploads/2010/11/Lantern-Robot-Cropped.jpg" alt="test" /></p>
+<p><img src="img/feather14.svg" alt="image" /></p>
+<hr />
+<p>strike trough</p><span style="text-decoration:line-through;">one</span>
+<span style="text-decoration:line-through;">two</span>
+<span style="text-decoration:line-through;">3</span>
+<hr /></p>
+			</div>
+		</content>
+		<author>
+			<name>Monk</name>
+		</author>
+	</entry>
+	
+	<entry>
+		<title>Test CyberMonk</title>
+		<link href="http://www.cybermonk.com/2013/10/18/Test-CyberMonk.html" />
+		<id>http://www.cybermonk.com/2013/10/18/Test-CyberMonk.html</id>
+		<updated>2013-10-18T00:00:00Z</updated>
+		<content type="xhtml">
+			<div xmlns="http://www.w3.org/1999/xhtml">
+				<p><h3>Ten years ago a crack commando</h3>
+<p>unit was sent to prison by a <strong>military</strong> court for a <em>crime</em> they didn't commit. These men promptly escaped from a maximum <a href="http://www.google.com">security stockade</a> to the Los Angeles underground. 
+<img src="../img/monkfeather.svg" alt="image" />
 Today, still wanted by the <code>government</code>, they <span style="text-decoration:line-through;">survive</span> as soldiers of fortune. If you have a problem and no one else can help, and if you can find them, maybe you can hire the A-team.</p></p>
 			</div>
 		</content>
