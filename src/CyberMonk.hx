@@ -69,7 +69,7 @@ private typedef Post = { > Site,
 class CyberMonk
 {
 
-	public static inline var VERSION = "0.4.0";
+	public static inline var VERSION = "0.4.1";
 	public static var HELP(default,null) = buildHelp();
 	public static inline var BUILD_INFO_FILE = '.cybermonk';
 
@@ -332,7 +332,7 @@ class CyberMonk
 		{}
 		ftt.close();
 
-		//Console.debug(ft);
+		// Console.debug(ft);
 		
 		if( !e_site.match( ft ) ){
 			Console.warn( 'Invalid html template [$fp]' );
@@ -505,11 +505,13 @@ class CyberMonk
 			}
 
 
-
+			// [mck] okay this is a hack... but once you start there is no stopping
 			// Console.log ([cfg.img, _str]);
 			// Console.debug ('<img src="' );
 			// ctx.content.split('<img src="' + cfg.img).join(_str);
 			ctx.content = ctx.content.split('<img src="' ).join('<img src="' + _str);
+			ctx.content = ctx.content.split('../../../../' ).join('../../../');
+			ctx.content = ctx.content.split('../../../http' ).join('http');
 			ctx.content = ctx.content.split('<link rel="stylesheet" href="css/' ).join('<link rel="stylesheet" href="'+_str+'css/');
 			ctx.content = ctx.content.split('<a href="http://www.cybermonk.com/">' ).join('<a href="'+_str+'">');
 			// Console.debug (ctx.content);
@@ -593,6 +595,10 @@ class CyberMonk
 						ctx.description = cfg.description;
 
 						Console.debug('ctx.title: ' + ctx.title + ' // ctx.description : ' + ctx.description );
+
+						// Console.debug(ctx);
+
+						// ctx.content = ctx.content.split("../").join("pfffff");
 
 						// [mck] okay... this needs some love...
 						/**
@@ -719,6 +725,7 @@ class CyberMonk
 		var a   = new Array<String>();
 		for( l in t.split( "\n" ) ) if( l.trim() != "" ) a.push(l);
 		t = a.join( "\n" );
+		t = t.split( '../' ).join(''); // [mck] I hope the last hack
 		writeFile( path, t );
 	}
 

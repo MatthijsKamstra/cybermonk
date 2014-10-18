@@ -20,9 +20,9 @@ __strong__,
 
 A [link](http://example.com).
 
-![alt text](img/monkfeather.svg "Title")
+![alt text](../img/monkfeather.svg "Title")
 
-![svg example](img/feather14.svg)
+![svg example](../img/feather14.svg)
 
 Shopping list:
 
