@@ -91,10 +91,10 @@ class CyberMonk
 	static var posts : Array < Post>;
 	static var markdown : Markmedown;
 
-	// static var e_site = ~/ *---(.+) *--- *(.+)/ms;
+	static var e_site = ~/ *---(.+) *--- *(.+)/ms;
 	// static var e_site = ~/(---\s*\n.*?\n?)^((---|\.\.\.)\s*$\n?)/ms;
 	// [mck] made it more precise to select the post header info 
-	static var e_site = ~/---\n(.+)\n---\n(.+)/ms; 
+	// static var e_site = ~/---\n(.+)\n--- *\n(.+)/ms; 
 	static var e_header_line = ~/^ *([a-zA-Z0-9_\/\.\-]+) *: *([a-zA-Z0-9!_,\/\[\]\.\-\?\(\)\s]+) *$/;
 	static var e_post_filename = ~/^([0-9][0-9][0-9][0-9])-([0-9][0-9])-([0-9][0-9])-([a-zA-Z0-9_,!\.\-\?\(\)\+]+)$/;
 
@@ -104,6 +104,10 @@ class CyberMonk
 	public function new():Void
 	{
 		Console.start();
+
+		// println(":::::::::::::::::::::::");
+		println(":: CyberMonk - " + VERSION + " ::");
+		// println(":::::::::::::::::::::::");
 	
 		var timestamp = Timer.stamp();
 
@@ -196,7 +200,8 @@ class CyberMonk
 		buildPost('Welcome-CyberMonk');
 		buildPost('Test-CyberMonk', -1);
 
-		writeFile(cfg.src + '_drafts/test me.md', '*test*');
+		// [mck] something to start with, and great for testing
+		writeFile(cfg.src + '_drafts/post test title.md', '*test*\n\n# h1\n## h2\n\n---\n\n![test](http://netdna.webdesignerdepot.com/uploads/robots/robot-36.jpg)');
 
 		Console.log( 'Generate' );
 	}
@@ -294,7 +299,40 @@ class CyberMonk
 	function parseSite( path : String, name : String ) : Site 
 	{
 		var fp = '$path/$name';
-		var ft = File.getContent( fp );
+		// var ft = File.getContent( fp );
+
+		// [mck] I am afraid I suck bigtime at regular expressions... so I fixed this way
+		// the original Markdown uses '---' for hr AND CyberMonk uses it at the top of the page for meta-data
+
+      	// open and read file line by line
+		var _split = '---';
+		var ftt = File.read(fp, false);
+		var ft = '';
+		try
+		{
+			var lineNum = 0;
+			var dashNum = 0;
+			while( true )
+			{
+	    		var str = ftt.readLine();
+	    		//Console.log ("'" + str + "'");
+	    		// [mck] the first two '---' will be intacked, but the other dash lines will be replaced with '* * *' (also <hr>)
+	    		if(str.indexOf('---') != -1) {
+	    			if(dashNum >= 2) {
+	    				str = '* * *';
+	    			}
+	    			dashNum++;
+	    		}
+	    		// Console.log("line " + lineNum + ": " + str);
+	    		ft += str + '\n';
+	    		lineNum++;
+			}
+		}
+		catch( ex:haxe.io.Eof ) 
+		{}
+		ftt.close();
+
+		//Console.debug(ft);
 		
 		if( !e_site.match( ft ) ){
 			Console.warn( 'Invalid html template [$fp]' );
@@ -308,7 +346,7 @@ class CyberMonk
 			if( ( l = l.trim() ) == "" )
 				continue;
 			if( !e_header_line.match( l ) )
-				Console.error( "Invalid template header ("+l+")" );
+				Console.error( 'Invalid template header [$fp] ($l)' );
 			var id 	= e_header_line.matched(1);
 			var v 	= e_header_line.matched(2);
 			switch( id ) {
