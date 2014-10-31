@@ -21,13 +21,13 @@ private typedef Config = {
 	var url : String;
 	var src : String;
 	var dst : String;
-	@:optional var title : String;
-	@:optional var description : String;
+	var title : String;
+	var description : String;
+	var author : String;
+	var img : String;
 	@:optional var keywords : Array<String>;
 	// @:optional var keywords : String;
 	@:optional var num_index_posts : Int; // num posts shown on index site
-	@:optional var author : String;
-	@:optional var img : String;
 }
 
 private typedef DateTime = {
@@ -69,7 +69,7 @@ private typedef Post = { > Site,
 class CyberMonk
 {
 
-	public static inline var VERSION = "0.4.1";
+	public static inline var VERSION = "0.4.2";
 	public static var HELP(default,null) = buildHelp();
 	public static inline var BUILD_INFO_FILE = '.cybermonk';
 
@@ -138,6 +138,7 @@ class CyberMonk
 			case 'build' 						: cmdBuild();
 			case 'update' 						: cmdUpdate();
 			case 'post' 						: cmdPost();
+			case 'convertimage' 				: cmdImageFolder();
 		}
 
 		// [mck] establish bragging rights
@@ -170,7 +171,7 @@ class CyberMonk
 		var info:String = createPostHeaderInfo('Post CyberMonk');
 
 		// writeFile (cfg.src + 'index.html' , output);
-		writeFile (cfg.src + 'index.html' , info + indexStr);
+		// writeFile (cfg.src + 'index.html' , info + indexStr);
 		writeFile (cfg.src + '_layout/site.html' , indexStr);
 		writeFile (cfg.src + '_layout/post.html' , info + postStr);
 
@@ -223,6 +224,18 @@ class CyberMonk
 		writeFile (cfg.src + '_posts/' + _now.datestring + '-' + name + '.md' , info + str);
 	}
 
+	function buildPostCustom (name:String, dateTime:DateTime, postHeader:String, content:String):Void
+	{
+		// generate first post
+		var _now:DateTime = dateTime;
+
+		var info:String = postHeader;
+
+		var str = content;
+
+		writeFile (cfg.src + '_posts/' + _now.datestring + '-' + name + '.md' , info + str);
+	}
+
 	function cmdClean():Void
 	{
 		if( FileSystem.exists( cfg.dst ) ) {
@@ -261,8 +274,10 @@ class CyberMonk
 
 		FileSystem.exists( cfg.dst ) ? clearDirectory( cfg.dst ) : FileSystem.createDirectory( cfg.dst );	
 
-		printPosts( cfg.src + "_posts" ); // write posts
-		processDirectory( cfg.src ); // Write everything else
+		printPosts( cfg.src + "_posts" ); 	// Write posts
+		printIndex( cfg.src ); 				// Write index.html
+		processDirectory( cfg.src ); 		// Write everything else
+
 
 		var fo = File.write( BUILD_INFO_FILE );
 		fo.writeString( Date.now().toString() );
@@ -285,6 +300,39 @@ class CyberMonk
 	{
 		buildPost('Post_CyberMonk');
 		println ('post-template is done');
+	}
+
+	function cmdImageFolder():Void
+	{
+		var path = cfg.src + '_img';
+		if( !FileSystem.exists( path ) ) {
+			println ( 'there is no folder _img, so there is nothing to convert' );
+		} else{
+			for( f in FileSystem.readDirectory( path ) ) 
+			{				
+				var stat:sys.FileStat = FileSystem.stat(path + '/'+ f);
+				// Console.debug (stat); // { mode => 33184, rdev => 0, size => 52533, ctime => 2014-10-31 10:54:15, dev => 16777221, gid => 20, ino => 14770546, uid => 501, mtime => 2014-10-30 23:35:57, nlink => 1, atime => 2014-10-31 10:54:14 }
+
+				var now:DateTime = getCurrentDate(0,stat.mtime);
+				var info:String = createPostHeaderInfo(f, 'img, converted', 'image folder converted');
+				var content:String = ''; 
+				content += '### $f\n'; 
+				content += '![$f](../img/$f)\n'; 
+				content += '<!--\n'; 
+				content += 'size = ${stat.size}\n'; 
+				content += 'creation time = ${stat.ctime}\n'; 
+				content += 'modification time = ${stat.mtime}\n'; 
+				content += 'access time = ${stat.atime}\n'; 
+				content += '-->\n'; 
+
+				buildPostCustom (f, now, info, content);
+
+				FileSystem.rename(path + '/' + f, cfg.src + 'img/' + f);
+
+				// Console.debug( '$f, $now, $info, $content');
+			}
+			println ('_img folder is converted to markdown files in _post');	
+		} 
 	}
 
 	// ____________________________________ parse / print ____________________________________
@@ -486,8 +534,7 @@ class CyberMonk
 
 			// Console.debug (p);
 
-			var ctx = mergeObjects( {}, p );
-
+			var ctx = mergeObjects( {cyberMonk_version : VERSION}, p );
 
 			// Console.debug(tpl.content);
 
@@ -522,6 +569,18 @@ class CyberMonk
 
 			Console.log( "+ " + p.path);
 		}
+	}
+
+	/**
+	 * this is much shorter, but is it the same?
+	 * @param  path :             String [description]
+	 * @return      [description]
+	 */
+	function printIndex(path : String):Void
+	{
+		var ctx : Dynamic = createBaseContext();
+		var tpl = new Template( File.getContent(path + '_layout/site.html') );
+		writeFile(cfg.dst + 'index.html', tpl.execute( ctx ));
 	}
 
 	/**
@@ -574,6 +633,7 @@ class CyberMonk
 
 						writeFile( cfg.dst+f, tpl.execute( ctx ) );
 					case "html" :
+						/*
 						var site = parseSite( path, f );
 						var tpl = new Template( site.content );
 						var content = tpl.execute( ctx );
@@ -599,14 +659,16 @@ class CyberMonk
 						// Console.debug(ctx);
 
 						// ctx.content = ctx.content.split("../").join("pfffff");
-
+						*/
 						// [mck] okay... this needs some love...
 						/**
 						 * first the folder is being read, and so the index.html needs to have the correct header
 						 * but for the generator it uses _layout/site.html, so there it doesn't need correct header
 						 * it seems that the post.html and site.html are the same...
 						 */
+						/*
 						writeHTMLSite( cfg.dst+f, ctx );
+						*/
 					default:
 						File.copy( fp, cfg.dst+f );
 					}
@@ -650,15 +712,17 @@ class CyberMonk
 	 * header needed above .md document, extra info about the post
 	 *
 	 * @example		var info:String = createPostHeaderInfo('hallo hoe gaat het');
-	 * @param  		title  		used for the post
+	 * @param  		title  			used for the post
+	 * @param  		tags        	send tags in a string (for now)
+	 * @param  		description 	send a description if you want it
 	 * @return      header info
 	 */
-	function createPostHeaderInfo(title:String):String
+	function createPostHeaderInfo(title:String, tags:String = 'first, cybermonk, post', description:String = 'what is this'):String
 	{
 		var info:String = "---\n" +
 			"title : " + title.replace("-", " ").replace("_", " " ) + "\n" +
-			"tags : first, cybermonk, post\n" +
-			"description : what is this\n" +
+			"tags : " +tags+ "\n" +
+			"description : "+description+"\n" +
 			"author : " + cfg.author + "\n" +
 			"---\n";
 
@@ -671,11 +735,12 @@ class CyberMonk
 	 * get the current date in a DateTime format
 	 * @example		var now:DateTime = getCurrentDate();
 	 * @param  		?minusYear 		little correction to make debugging easier
+	 * @param  		?date      		just send the date you want to use, if not use the current date
 	 * @return 		DateTime
 	 */
-	function getCurrentDate(?minusYear:Int=0):DateTime
+	function getCurrentDate(?minusYear:Int=0,?date:Date):DateTime
 	{
-		var n = Date.now();
+		var n = (date == null) ? Date.now() : date;
 		var dy = n.getFullYear() + minusYear;
 		var dm = n.getMonth()+1;
 		var dd = n.getDate();
