@@ -7,6 +7,7 @@
 	<meta name="description" content="::description::">
 	<meta name="keywords" content="::keywords::">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="generator" content="CyberMonk ::cyberMonk_version::" />
 	<link rel="stylesheet" href="css/base.min.css">
 	<link rel="stylesheet" href="css/custom.css">
 	<link rel="alternate" type="application/atom+xml" title="::title:: - feed" href="atom.xml" />
@@ -70,6 +71,8 @@
 		by <b>::author::</b>
 		</footer>
 	</div>
+
+	<!-- This blog is generated CyberMonk version ::cyberMonk_version:: -->
 
 </body>
 </html>
