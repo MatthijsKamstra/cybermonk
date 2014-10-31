@@ -39,5 +39,5 @@
 -cmd nekotools boot bin/cybermonk.n
 
 # install: CyberMonk on OSX
--cmd echo 'install cybermonk in /usr/bin'
--cmd sudo cp bin/cybermonk /usr/bin/
+# -cmd echo 'install cybermonk in /usr/bin'
+# -cmd sudo cp bin/cybermonk /usr/bin/
