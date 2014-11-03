@@ -132,10 +132,10 @@ class CyberMonk
 		switch cmd {
 			case "help", 'h'					: exit( HELP );
 			case "version", "v"					: exit( VERSION );
+			case 'build' 						: cmdBuild();
 			case 'start', 'generate', 'init' 	: cmdGenerate();
 			case 'config' 						: cmdConfig();
 			case 'clean' 						: cmdClean();
-			case 'build' 						: cmdBuild();
 			case 'update' 						: cmdUpdate();
 			case 'post' 						: cmdPost();
 			case 'convertimage' 				: cmdImageFolder();
@@ -310,6 +310,8 @@ class CyberMonk
 		} else{
 			for( f in FileSystem.readDirectory( path ) ) 
 			{				
+				if( f.startsWith(".") ) continue; // don't convert hidden os files like .DS_Store
+
 				var stat:sys.FileStat = FileSystem.stat(path + '/'+ f);
 				// Console.debug (stat); // { mode => 33184, rdev => 0, size => 52533, ctime => 2014-10-31 10:54:15, dev => 16777221, gid => 20, ino => 14770546, uid => 501, mtime => 2014-10-30 23:35:57, nlink => 1, atime => 2014-10-31 10:54:14 }
 
@@ -330,8 +332,9 @@ class CyberMonk
 				FileSystem.rename(path + '/' + f, cfg.src + 'img/' + f);
 
 				// Console.debug( '$f, $now, $info, $content');
+				
+				println ('$f is converted to .md file in _post folder');	
 			}
-			println ('_img folder is converted to markdown files in _post');	
 		} 
 	}
 
@@ -579,8 +582,80 @@ class CyberMonk
 	function printIndex(path : String):Void
 	{
 		var ctx : Dynamic = createBaseContext();
+		var total = Math.ceil(ctx.archive.length / cfg.num_index_posts);
+		ctx.pagination = getPagination(0,total);
+
+
+
 		var tpl = new Template( File.getContent(path + '_layout/site.html') );
-		writeFile(cfg.dst + 'index.html', tpl.execute( ctx ));
+		var str = tpl.execute( ctx );
+
+		// [mck] arrgggg again the relative path to the image wrong
+		str = str.split("../img").join("img");
+
+		writeFile(cfg.dst + 'index.html', str);
+
+
+		// [mck] time to fix archive
+
+		// Console.debug ("how many Index files are there: " + ctx.posts.length);
+		// Console.debug ("how many Archive files are there: " + ctx.archive.length);
+		// Console.debug ("how many item per page: " + cfg.num_index_posts);
+		// Console.debug ('how many archives pages: ' + Math.ceil(ctx.archive.length / cfg.num_index_posts));
+
+		var _posts = new Array<Post>();
+		_posts = ctx.archive;
+		var _archive = new Array<Post>();
+		
+		for (i in 0...total) 
+		{
+			_archive = _posts.slice(i * cfg.num_index_posts, (i+1) * cfg.num_index_posts);
+
+			// Console.debug ("\n\n\t - how many archive files are there: " + _archive);
+			
+			ctx.posts = _archive;
+			ctx.pagination = getPagination(i+1,total);
+			var tpl = new Template( File.getContent(path + '_layout/site.html') );
+			var str = tpl.execute( ctx );
+
+			// [mck] arrgggg again the relative path to the image wrong
+			str = str.split("../img").join("img");
+
+			writeFile(cfg.dst + 'archive'+Std.string(i+1)+'.html', str);
+			
+		}
+
+		// Console.debug ("\thow many Index files are there: " + _posts.length);
+		// Console.debug ("\thow many Archive files are there: " + _archive.length);
+
+	}
+
+	function getPagination(id:Int,total:Int):String
+	{
+		Console.debug ('$id , $total');
+
+		if(total == 0){
+			return '<!-- Pagination -->\n';			
+		}
+
+		// var str:String = '<!-- $id , $total -->\n';
+		var str:String = '';
+
+		str += '<div class="container px2">\n';
+		str += '<div class="clearfix">\n';
+		if(id != total){
+			str += '<a href="archive'+Std.string(id+1)+'.html" class="left button button-nav-light"><svg class="icon" data-icon="chevron-left" viewBox="0 0 32 32" style="fill:currentcolor"><path d="M20 1 L24 5 L14 16 L24 27 L20 31 L6 16 z "></path></svg>Previous</a>\n';
+		}
+		if(id != 0){
+			var link:String = 'archive'+Std.string(id-1)+'.html'; 
+			if(id-1 == 0) link = 'index.html';
+			str += '<a href="'+link+'" class="right button button-nav-light">Next<svg class="icon" data-icon="chevron-right" viewBox="0 0 32 32" style="fill:currentcolor"><path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z "></path></svg></a>\n';
+		}
+		str += '</div>\n';
+		str += '</div>\n';
+
+
+		return str;
 	}
 
 	/**
@@ -840,6 +915,7 @@ class CyberMonk
 		'build : Build project',
 		// 'release : Build project in release mode',
 		'clean : Remove all generated files',
+		'convertimage : Generate markdown files from _img folder',
 		'post : Create a post',
 		'update : Update templates',
 		'config : Print project config',
