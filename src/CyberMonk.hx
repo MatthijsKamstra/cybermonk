@@ -139,6 +139,7 @@ class CyberMonk
 			case 'update' 						: cmdUpdate();
 			case 'post' 						: cmdPost();
 			case 'convertimage' 				: cmdImageFolder();
+			case 'convertimg' 					: cmdImageFolder(true);
 		}
 
 		// [mck] establish bragging rights
@@ -302,7 +303,7 @@ class CyberMonk
 		println ('post-template is done');
 	}
 
-	function cmdImageFolder():Void
+	function cmdImageFolder(isLean:Bool = false):Void
 	{
 		var path = cfg.src + '_img';
 		if( !FileSystem.exists( path ) ) {
@@ -317,15 +318,24 @@ class CyberMonk
 
 				var now:DateTime = getCurrentDate(0,stat.mtime);
 				var info:String = createPostHeaderInfo(f, 'img, converted', 'image folder converted');
+
+				if(isLean){
+					info = "---\n" + "title : " + f.replace("-", " ").replace("_", " " ) + "\n" + "---\n";
+				}
+
 				var content:String = ''; 
-				content += '### $f\n'; 
+				if(!isLean){
+					content += '### $f\n'; 
+				}
 				content += '![$f](../img/$f)\n'; 
-				content += '<!--\n'; 
-				content += 'size = ${stat.size}\n'; 
-				content += 'creation time = ${stat.ctime}\n'; 
-				content += 'modification time = ${stat.mtime}\n'; 
-				content += 'access time = ${stat.atime}\n'; 
-				content += '-->\n'; 
+				if(!isLean){				
+					content += '<!--\n'; 
+					content += 'size = ${stat.size}\n'; 
+					content += 'creation time = ${stat.ctime}\n'; 
+					content += 'modification time = ${stat.mtime}\n'; 
+					content += 'access time = ${stat.atime}\n'; 
+					content += '-->\n'; 
+				}
 
 				buildPostCustom (f, now, info, content);
 
@@ -632,7 +642,7 @@ class CyberMonk
 
 	function getPagination(id:Int,total:Int):String
 	{
-		Console.debug ('$id , $total');
+		// Console.debug ('$id , $total');
 
 		if(total == 0){
 			return '<!-- Pagination -->\n';			
@@ -666,7 +676,7 @@ class CyberMonk
 	 */
 	function processDirectory( path : String ) {
 
-		Console.log ('$path');
+		// Console.log ('$path');
 
 		for( f in FileSystem.readDirectory( path ) ) {
 			if( f.startsWith(".") )

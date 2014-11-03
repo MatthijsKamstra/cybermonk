@@ -1,17 +1,17 @@
 # CyberMonk
 
 I was looking for a simple and quick way to start a little blog.
-Perverably cheaply (free) hosted.
+Preverably cheaply (free) hosted.
 
-I quickly found out that you need a static website.
-Best solution is *Jekyll*.
+I quickly found out that you could do that on github and you need a static website.
+Best blogging solution is *Jekyll*.
 
-But I like Haxe, so I was looking for someone who had the same idea.
+But for all my hobby projects I us Haxe, so I was looking for someone who had the same idea and did the heavy lifting for me.
 
-I found it: [Tong](http://blog.disktree.net/) and his Blog generator tool [Cyberchrist](https://github.com/tong/cyberchrist)
+Haxe has a very active communinity so it was not that difficult to find: [Tong](http://blog.disktree.net/) created [Cyberchrist](https://github.com/tong/cyberchrist) a _Blog generator tool_.   
 Sadly the project doesn't work out-of-the-box, so I need to rewrite/refector/recode.
 
-That is also the reason I renamed the project.
+That is also the reason I renamed the project to CyberMonk.
 
 
 ## CyberMonk version
@@ -56,7 +56,7 @@ Mou - Markdown editor for developers.
 ## Structure
 ```
 .
-├── _config
+├── _config.json
 ├── _drafts
 |   └── foobar.md
 ├── _layout
@@ -74,12 +74,13 @@ Open terminal
 drag `cybermonk` into your terminal and press enter.
 
 ```
-CyberMonk 0.4.0
+CyberMonk 0.4.2
      Usage : cybermonk <command>
      Commands :
           start : Start new project (default files and templates)
           build : Build project
           clean : Remove all generated files
+          convertimage : Generate markdown files from _img folder
           post : Create a post
           update : Update templates
           config : Print project config
