@@ -78,6 +78,7 @@ class Markmedown
 		t = Markdown.markdownToHtml( t );
 
 		// [mck] perhaps need to reset the comment in markdown, they are fine to hide content
+		t = t.split ("&lt;!--").join("<!--");
 
 		return t;
 	}
