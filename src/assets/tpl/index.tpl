@@ -37,7 +37,7 @@
 	<header class="p2 white bg-dark-gray">
 		<div class="container">
 			<div class="table">
-			<div class="table-cell p0"><a href="::url::"><img src="img/monkfeather.svg" width="200px" height="200px" title="Monk" alt="Monk"/></a></div>
+			<div class="table-cell p0"><a href="::url::"><img src="img/monkfeather.svg" width="200px" height="200px" title="::title::" alt="::title::"/></a></div>
 			<div class="table-cell ">
 				<h1 class="m0">::title::</h1>
 				<h2 class="m0">::description::</h2>
@@ -61,6 +61,8 @@
 
 	</main>
 
+	::pagination::
+
 	<div class="container px2">
 		<footer class="py4 center">
 		Made with
@@ -73,6 +75,7 @@
 	</div>
 
 	<!-- This blog is generated CyberMonk version ::cyberMonk_version:: -->
+
 
 </body>
 </html>
