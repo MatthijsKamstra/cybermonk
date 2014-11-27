@@ -169,12 +169,13 @@ class CyberMonk
 
 		// Console.debug (cfg);
 
-		var info:String = createPostHeaderInfo('Post CyberMonk');
+		// var info:String = createPostHeaderInfo('Post CyberMonk');
 
 		// writeFile (cfg.src + 'index.html' , output);
 		// writeFile (cfg.src + 'index.html' , info + indexStr);
 		writeFile (cfg.src + '_layout/site.html' , indexStr);
-		writeFile (cfg.src + '_layout/post.html' , info + postStr);
+		writeFile (cfg.src + '_layout/post.html' , postStr);
+		// writeFile (cfg.src + '_layout/post.html' , info + postStr);
 
 		// use embedded .css
 		var cssStr = haxe.Resource.getString("css");
@@ -395,35 +396,42 @@ class CyberMonk
 
 		// Console.debug(ft);
 		
-		if( !e_site.match( ft ) ){
-			Console.warn( 'Invalid html template [$fp]' );
-		}
-
 		var s : Site = cast {
 			css : new Array<String>()
 		};
 
-		for( l in e_site.matched(1).trim().split("\n") ) {
-			if( ( l = l.trim() ) == "" )
-				continue;
-			if( !e_header_line.match( l ) )
-				Console.error( 'Invalid template header [$fp] ($l)' );
-			var id 	= e_header_line.matched(1);
-			var v 	= e_header_line.matched(2);
-			switch( id ) {
-				case "title": 			s.title = v;
-				case "layout": 			s.layout = v;
-				case "css": 			s.css.push(v);
-				case "tags":
-					s.tags = new Array();
-					var tags = v.split( "," );
-					for( t in tags ) 	s.tags.push( t.trim() );
-				case "description": 	s.description = v;
-				case "author": 			s.author = v;
-				default : Console.log( 'Unknown header key ($id)' );
+		// [mck] just set the data	
+		s.content = ft;
+	
+		// [mck] does it match the e_site regex then split
+		if( e_site.match( ft ) )
+		{
+			for( l in e_site.matched(1).trim().split("\n") ) 
+			{
+				// Console.warn( 'Invalid html template [$fp]' );
+				if( ( l = l.trim() ) == "" )
+					continue;
+				if( !e_header_line.match( l ) )
+					Console.error( 'Invalid template header [$fp] ($l)' );
+				var id 	= e_header_line.matched(1);
+				var v 	= e_header_line.matched(2);
+				switch( id ) {
+					case "title": 			s.title = v;
+					case "layout": 			s.layout = v;
+					case "css": 			s.css.push(v);
+					case "tags":
+						s.tags = new Array();
+						var tags = v.split( "," );
+						for( t in tags ) 	s.tags.push( t.trim() );
+					case "description": 	s.description = v;
+					case "author": 			s.author = v;
+					default : Console.log( 'Unknown header key ($id)' );
+				}
 			}
+			s.content = e_site.matched(2);
+			
 		}
-		s.content = e_site.matched(2);
+		
 		return s;
 	}
 
