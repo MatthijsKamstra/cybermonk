@@ -8,6 +8,17 @@
 	<meta name="keywords" content="::keywords::">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="generator" content="CyberMonk ::cyberMonk_version::" />
+
+	<!-- Twitter Card data -->
+	<meta name="twitter:card" value="summary">
+
+	<!-- Open Graph data -->
+	<meta property="og:title" content="::title::" />
+	<meta property="og:type" content="article" />
+	<meta property="og:url" content="::url::" />
+	<!-- <meta property="og:image" content="::url::/image.jpg" /> -->
+	<meta property="og:description" content="::description::" />
+
 	<link rel="stylesheet" href="css/base.min.css">
 	<link rel="stylesheet" href="css/custom.css">
 	<!--   
@@ -69,5 +80,8 @@
 
 	<!-- This blog is generated CyberMonk version ::cyberMonk_version:: -->
 
+	<!-- JavaScript plugins (requires jQuery) -->
+	<script src="http://code.jquery.com/jquery.js"></script>
+	<!-- <script src="GenArt.js"></script> -->
 </body>
 </html>

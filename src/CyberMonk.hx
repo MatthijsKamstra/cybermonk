@@ -69,7 +69,7 @@ private typedef Post = { > Site,
 class CyberMonk
 {
 
-	public static inline var VERSION = "0.4.2";
+	public static inline var VERSION = "0.4.3";
 	public static var HELP(default,null) = buildHelp();
 	public static inline var BUILD_INFO_FILE = '.cybermonk';
 

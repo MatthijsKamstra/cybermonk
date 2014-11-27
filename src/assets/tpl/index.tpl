@@ -8,6 +8,17 @@
 	<meta name="keywords" content="::keywords::">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="generator" content="CyberMonk ::cyberMonk_version::" />
+	
+	<!-- Twitter Card data -->
+	<meta name="twitter:card" value="summary">
+
+	<!-- Open Graph data -->
+	<meta property="og:title" content="::title::" />
+	<meta property="og:type" content="article" />
+	<meta property="og:url" content="::url::" />
+	<!-- <meta property="og:image" content="::url::/image.jpg" /> -->
+	<meta property="og:description" content="::description::" />
+
 	<link rel="stylesheet" href="css/base.min.css">
 	<link rel="stylesheet" href="css/custom.css">
 	<link rel="alternate" type="application/atom+xml" title="::title:: - feed" href="atom.xml" />
@@ -49,7 +60,7 @@
 	<main class="container px2 overflow-hidden">
 
 		::foreach posts::
-		<section class="py3">
+		<section class="py3" id="::title::">
 			<h1 class="md-h1 mb2 center"><a href="::path::" title="::title::">::title::</a></h1>
 			<h5 class="pb1 center">::date.datestring::</h5>
 			<hr class="bg-dark-gray">
@@ -76,6 +87,9 @@
 
 	<!-- This blog is generated CyberMonk version ::cyberMonk_version:: -->
 
+	<!-- JavaScript plugins (requires jQuery) -->
+	<script src="http://code.jquery.com/jquery.js"></script>
+	<!-- <script src="GenArt.js"></script> -->
 
 </body>
 </html>
