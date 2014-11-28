@@ -138,6 +138,7 @@ class CyberMonk
 			case 'clean' 						: cmdClean();
 			case 'update' 						: cmdUpdate();
 			case 'post' 						: cmdPost();
+			case 'pages' 						: cmdPages();
 			case 'convertimage' 				: cmdImageFolder();
 			case 'convertimg' 					: cmdImageFolder(true);
 		}
@@ -193,6 +194,8 @@ class CyberMonk
 		var svgStr = haxe.Resource.getString("feather");
 		writeFile (cfg.src + 'img/feather14.svg' , svgStr);
 		writeFile (cfg.src + 'img/monkfeather.svg' , haxe.Resource.getString('monkfeather') );
+		writeFile (cfg.src + 'img/twitter.svg' , haxe.Resource.getString('twitter') );
+		writeFile (cfg.src + 'img/facebook.svg' , haxe.Resource.getString('facebook') );
 		
 
 		var favicon = haxe.Resource.getBytes('favicon');
@@ -302,6 +305,16 @@ class CyberMonk
 	{
 		buildPost('Post_CyberMonk');
 		println ('post-template is done');
+	}
+
+	function cmdPages():Void
+	{
+		var path = cfg.src + '_pages';
+		if( !FileSystem.exists( path ) ) {
+			println ( 'there is no folder _pages, so there is nothing to convert' );
+		} else{
+		 	println ( 'FIXME' );
+		}
 	}
 
 	function cmdImageFolder(isLean:Bool = false):Void
@@ -822,7 +835,7 @@ class CyberMonk
 		return info;
 	}
 
-	// ____________________________________ time functions ____________________________________
+	// ____________________________________ date functions ____________________________________
 
 	/**
 	 * get the current date in a DateTime format

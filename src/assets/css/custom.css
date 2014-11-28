@@ -1,1 +1,19 @@
 h1, h2, h3, h4, h5, h6 { font-family: 'Dosis', 'Helvetica Neue',Helvetica,Arial,sans-serif; }
+
+.social { 
+	width: 2em;
+	height: 2em;
+	position: relative;
+	vertical-align: middle;
+	fill: currentcolor;
+}
+
+a img.social {
+	opacity: 0.5;
+	-webkit-transition: opacity 0.5s ease-in-out;
+    -moz-transition: opacity 0.5s ease-in-out;
+    transition: opacity 0.5s ease-in-out;
+}
+a:hover img.social{
+	 opacity: 1;
+}

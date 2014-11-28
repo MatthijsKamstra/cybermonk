@@ -16,7 +16,7 @@
 	<meta property="og:title" content="::title::" />
 	<meta property="og:type" content="article" />
 	<meta property="og:url" content="::url::" />
-	<!-- <meta property="og:image" content="::url::/image.jpg" /> -->
+	<meta property="og:image" content="../../../img/monkfeather.svg" />
 	<meta property="og:description" content="::description::" />
 
 	<link rel="stylesheet" href="css/base.min.css">
@@ -48,14 +48,28 @@
 		<div class="container">
 			<div class="table">
 			<div class="table-cell p0"><a href="::url::"><img src="img/monkfeather.svg" width="70px" height="70px" title="::title::" alt="::title::"/></a></div>
+			<div class="table-cell ">
+				<!--
+				<h2 class="m0">::title::</h1>
+				<h3 class="m0">::description::</h2>
+				-->
+			</div>
 			<div class="table-cell "></div>
 			</div>
 		</div>	
 	</header>
 
+
+
 	<main class="container px2 overflow-hidden">
 
+		<div class="right p2 clearfix">
+			<a href="https://twitter.com/share?url=::url::::path::&text=::title::" target="_blank" title="Share on Twitter" ><img src="img/twitter.svg" class="social"></a>
+			<a href="https://www.facebook.com/sharer/sharer.php?u=::url::::path::" target="_blank" title="Share on Facebook" ><img src="img/facebook.svg" class="social"></a>
+		</div>
+
 		<section class="py3">
+
 			<h1 class="md-h1 mb0 center">::title::</h1>
 			<!-- <h1 class="md-h1 mb0 center"><a href="::path::" title="::title::">::title::</a></h1> -->
 			<h5 class="border-bottom py2 center">::date.datestring::</h5>

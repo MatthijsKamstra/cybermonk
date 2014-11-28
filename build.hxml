@@ -9,6 +9,8 @@
 -resource src/assets/text.md@markdown
 -resource src/assets/img/feather14.svg@feather
 -resource src/assets/img/monkfeather.svg@monkfeather
+-resource src/assets/img/twitter.svg@twitter
+-resource src/assets/img/facebook.svg@facebook
 -resource src/assets/favicon.ico@favicon
 
 #haxe libs
@@ -35,7 +37,7 @@
 #"-dce full" : remove all unused code
 -dce full
 
-# // [mck] create a executable file with no extension
+# // [mck] create standalone executables from Neko bytecode
 -cmd nekotools boot bin/cybermonk.n
 
 # install: CyberMonk on OSX
