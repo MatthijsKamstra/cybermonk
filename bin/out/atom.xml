@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+ 
+<feed xmlns="http://www.w3.org/2005/Atom">
+ 
+	<title>CyberMonk blog generator</title>
+	<subtitle>Short description of the blog</subtitle>
+	<link rel="self" href="http://www.cybermonk.com/atom.xml" />
+	<link href="http://www.cybermonk.com/atom.xml" />
+	<link rel="alternate" type="text/html" hreflang="en" href="http://www.cybermonk.com/"/>
+	<updated>2014-11-29T00:00:00Z</updated>
+	<id>http://www.cybermonk.com/</id>
+	<generator version="0.4.3">cybermonk</generator>
+	<author>
+		<name>Monk</name>
+		<uri>http://www.cybermonk.com/</uri>
+	</author>
+	<id>http://www.cybermonk.com/</id>
+ 	
+	
+	<entry>
+		<title>Welcome CyberMonk</title>
+		<link href="http://www.cybermonk.com/2014/11/29/Welcome-CyberMonk.html" />
+		<id>http://www.cybermonk.com/2014/11/29/Welcome-CyberMonk.html</id>
+		<updated>2014-11-29T00:00:00Z</updated>
+		<content type="xhtml">
+			<div xmlns="http://www.w3.org/1999/xhtml">
+				<p><h3>Ten years ago a crack commando</h3>
+<p>unit was sent to prison by a <strong>military</strong> court for a <em>crime</em> they didn't commit. These men promptly escaped from a maximum <a href="http://www.google.com">security stockade</a> to the Los Angeles underground. 
+<img src="../img/monkfeather.svg" alt="image" />
+Today, still wanted by the <code>government</code>, they <span style="text-decoration:line-through;">survive</span> as soldiers of fortune. If you have a problem and no one else can help, and if you can find them, maybe you can hire the A-team.</p></p>
+			</div>
+		</content>
+		<author>
+			<name>Monk</name>
+		</author>
+	</entry>
+	
+	<entry>
+		<title>Test CyberMonk</title>
+		<link href="http://www.cybermonk.com/2013/11/29/Test-CyberMonk.html" />
+		<id>http://www.cybermonk.com/2013/11/29/Test-CyberMonk.html</id>
+		<updated>2013-11-29T00:00:00Z</updated>
+		<content type="xhtml">
+			<div xmlns="http://www.w3.org/1999/xhtml">
+				<p><h3>Ten years ago a crack commando</h3>
+<p>unit was sent to prison by a <strong>military</strong> court for a <em>crime</em> they didn't commit. These men promptly escaped from a maximum <a href="http://www.google.com">security stockade</a> to the Los Angeles underground. 
+<img src="../img/monkfeather.svg" alt="image" />
+Today, still wanted by the <code>government</code>, they <span style="text-decoration:line-through;">survive</span> as soldiers of fortune. If you have a problem and no one else can help, and if you can find them, maybe you can hire the A-team.</p></p>
+			</div>
+		</content>
+		<author>
+			<name>Monk</name>
+		</author>
+	</entry>
+	
+ 
+</feed>
